@@ -53,9 +53,7 @@ def predict_freshness(sample_file):
 def generate_product_details(sample_file):
     model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
     response = model.generate_content([
-        sample_file, 
-        response = model.generate_content([
-    sample_file, 
+        sample_file,  
     """For each product in the image, list:
     - timestamp (current date and time of processing the product)
     - product name
