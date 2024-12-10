@@ -54,9 +54,9 @@ def generate_product_details(sample_file):
     model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
     response = model.generate_content([
         sample_file, 
-        f'List product names, categories, brands, MRP, manufacturer, expiry date, and quantity and if some details are not found then fill NA from the image in json format like this: '
-        f'{{"products": [{{ "product_name": "Tata Salt", "category": ["Staples"], "brand": "Tata" , "MRP":"60RS" , "Manufacturer":"TATA" ,"Expiry Date":"25-06-2003"}}, '
-        f'{{ "product_name": "Boost", "category": ["Snacks and Beverages"], "brand": "Nestlé",MRP":"60RS" , "Manufacturer":"TATA" ,"Expiry Date":"25-06-2003"}}]}}. '
+        f'List timestamp which is the date and time of processing the image, product names, brands, MRP, expiry date,product count,whether it is expired YES or NO by comparing with today's date and expected life span in days by subtracting today's date from the expiry date and if it is already expired give expected life span as NA and if some details are not found then fill NA from the image in json format like this: '
+        f'{{"products": [{{ "timestamp":"2024-12-10T05:14:01+05:30",product_name": "Tata Salt", "brand": "Tata" , "MRP":"60RS" ,"Expiry Date":"25-06-2025","count":"1","expired":"NO","expected_life_span":"197"}}, '
+        f'{{ "timestamp":"2024-12-10T05:14:01+05:30","product_name": "Boost", "brand": "Nestlé",MRP":"60RS"  ,"Expiry Date":"25-06-2025","count":"1","expired":"NO","expected_life_span":"197"}}]}}. '
         f'I want only these details, no more text. Use these categories: {", ".join(categories)}.'
     ])
     response_text = response.text.strip()
