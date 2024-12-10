@@ -65,6 +65,8 @@ def generate_product_details(sample_file):
 
 def parse_response_to_dataframe(response_text):
     try:
+        if response_text.startswith("```json") and response_text.endswith("```"):
+            response_text = response_text[7:-3].strip()
         # Attempt to parse the response text as JSON
         products_list = json.loads(response_text)
         if 'products' in products_list:
