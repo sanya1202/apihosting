@@ -57,7 +57,7 @@ def generate_product_details(sample_file):
         f'List timestamp,product names,brands, MRP, expiry date,product count,whether it is expired YES or NO by comparing with today's date and expected life span in days by subtracting today's date from the expiry date and if it is already expired give expected life span as NA and if some details are not found then fill NA from the image in json format like this: '
         f'{{"products": [{{ "timestamp":"2024-12-10T05:14:01+05:30",product_name": "Tata Salt", "brand": "Tata" , "MRP":"60RS" ,"Expiry Date":"25-06-2025","count":"1","expired":"NO","expected_life_span":"197"}}, '
         f'{{ "timestamp":"2024-12-10T05:14:01+05:30","product_name": "Boost", "brand": "Nestlé",MRP":"60RS"  ,"Expiry Date":"25-06-2025","count":"1","expired":"NO","expected_life_span":"197"}}]}}. '
-        f'I want only these details, no more text. Use these categories: {", ".join(categories)}.'
+        f'I want only these details, no more text.'
     ])
     response_text = response.text.strip()
     print(f"Generated Product Details Response: {response_text}")  # Debugging output
