@@ -42,22 +42,39 @@ def classify_image(sample_file):
     return classification == "yes"
 
 # Predict freshness for fruits/vegetables
-def predict_fruit_or_vegetable_details(sample_file):
+# Predict details for multiple fruits/vegetables
+def predict_multiple_fruit_or_vegetable_details(sample_file):
+    """
+    Predict the name, freshness index, and expected life span of each fruit/vegetable in the image.
+    """
     model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
-    response = model.generate_content([sample_file, """For the fruit or vegetable in the image, provide:
-    - name
-    - freshness index on a scale of 1-10
-    - expected life span calculated as 1.6 * freshness index.
-
-    Return the data in JSON format like this:
-    {
-        "name": "Apple",
-        "freshness_index": 8,
-        "expected_life_span": 12.8
-    }"""])
+    response = model.generate_content([
+        sample_file,
+        """List the name, freshness index (scale of 1-10), and expected life span (1.6 * freshness index) for each fruit/vegetable in the image. 
+        Return the result in JSON format like this:
+        {
+            "items": [
+                {"name": "Apple", "freshness_index": 9, "expected_life_span": 14.4},
+                {"name": "Banana", "freshness_index": 6, "expected_life_span": 9.6}
+            ]
+        }"""
+    ])
+    
     response_text = response.text.strip()
-    print(f"Generated Fruit/Vegetable Details Response: {response_text}")  # Debugging output
-    return response_text
+    print(f"Generated Fruits/Vegetables Details Response: {response_text}")  # Debugging output
+    
+    try:
+        if response_text.startswith("```json") and response_text.endswith("```"):
+            response_text = response_text[7:-3].strip()
+        parsed_response = json.loads(response_text)
+        items = parsed_response.get("items", [])
+        for item in items:
+            add_timestamp(item)  # Add timestamp to each fruit/vegetable
+        return items
+    except json.JSONDecodeError:
+        print("Failed to parse response text as JSON.")
+        return []
+
 
 def add_timestamp(details):
     """Add timestamp to a single product or item."""
@@ -149,18 +166,16 @@ async def predict_image(file: UploadFile = File(...)):
         is_fruits_or_vegetables = classify_image(sample_file)
         
         if is_fruits_or_vegetables:
-            response_text = predict_fruit_or_vegetable_details(sample_file)
-            try:
-                details = json.loads(response_text)
-                details["expected_life_span"] = round(details["freshness_index"] * 1.6, 1)  # Ensure calculation is accurate
-                details_with_timestamp = add_timestamp(details)
+            # Get details for multiple fruits/vegetables
+            fruit_vegetable_details = predict_multiple_fruit_or_vegetable_details(sample_file)
+            if fruit_vegetable_details:
                 return {
                     "filename": file.filename,
-                    "message": "Fruit/Vegetable details extracted successfully.",
-                    "details": details_with_timestamp
+                    "message": "Fruits/vegetables details extracted successfully.",
+                    "fruit_vegetable_details": fruit_vegetable_details
                 }
-            except json.JSONDecodeError:
-                return {"error": "Failed to parse details for fruits/vegetables."}
+            else:
+                return {"error": "Unable to extract fruits/vegetables details."}
         else:
             response_text = generate_product_details(sample_file)
             if response_text:
