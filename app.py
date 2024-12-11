@@ -6,6 +6,7 @@ import tempfile
 import json
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
 
 # Configure the API key
 api_key = 'AIzaSyCwZPKq52I3CK8ptZFqkhHo04IVIv6hY_k'  # Replace with your actual API key
@@ -94,6 +95,12 @@ def generate_product_details(sample_file):
     response_text = response.text.strip()
     print(f"Generated Product Details Response: {response_text}")  # Debugging output
     return response_text
+def add_timestamps_to_products(products):
+    """Add timestamp to each product."""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Current timestamp
+    for product in products:
+        product["timestamp"] = timestamp
+    return products
 
 def parse_response_to_dataframe(response_text):
     try:
@@ -102,7 +109,9 @@ def parse_response_to_dataframe(response_text):
         # Attempt to parse the response text as JSON
         products_list = json.loads(response_text)
         if 'products' in products_list:
-            return pd.DataFrame(products_list['products'])
+            # Add timestamp to products
+            products_with_timestamps = add_timestamps_to_products(products_list['products'])
+            return pd.DataFrame(products_with_timestamps)
         else:
             print("No 'products' key found in response.")
             return pd.DataFrame()  # Return an empty DataFrame
