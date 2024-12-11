@@ -42,13 +42,28 @@ def classify_image(sample_file):
     return classification == "yes"
 
 # Predict freshness for fruits/vegetables
-def predict_freshness(sample_file):
+def predict_fruit_or_vegetable_details(sample_file):
     model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
-    response = model.generate_content([sample_file, "Rate the freshness of the fruits/vegetables in the image on a scale of 1 to 10."])
-    try:
-        return int(response.text.strip())
-    except ValueError:
-        return None
+    response = model.generate_content([sample_file, """For the fruit or vegetable in the image, provide:
+    - name
+    - freshness index on a scale of 1-10
+    - expected life span calculated as 1.6 * freshness index.
+
+    Return the data in JSON format like this:
+    {
+        "name": "Apple",
+        "freshness_index": 8,
+        "expected_life_span": 12.8
+    }"""])
+    response_text = response.text.strip()
+    print(f"Generated Fruit/Vegetable Details Response: {response_text}")  # Debugging output
+    return response_text
+
+def add_timestamp(details):
+    """Add timestamp to a single product or item."""
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " +5:30"  # Current timestamp in IST
+    details["timestamp"] = timestamp
+    return details
 
 # Generate product details for non-fruits/vegetables
 def generate_product_details(sample_file):
@@ -134,14 +149,18 @@ async def predict_image(file: UploadFile = File(...)):
         is_fruits_or_vegetables = classify_image(sample_file)
         
         if is_fruits_or_vegetables:
-            freshness_index = predict_freshness(sample_file)
-            if freshness_index is not None:
+            response_text = predict_fruit_or_vegetable_details(sample_file)
+            try:
+                details = json.loads(response_text)
+                details["expected_life_span"] = round(details["freshness_index"] * 1.6, 1)  # Ensure calculation is accurate
+                details_with_timestamp = add_timestamp(details)
                 return {
                     "filename": file.filename,
-                    "message": f"Image contains fruits/vegetables with a predicted freshness index of {freshness_index}"
+                    "message": "Fruit/Vegetable details extracted successfully.",
+                    "details": details_with_timestamp
                 }
-            else:
-                return {"error": "Unable to predict freshness."}
+            except json.JSONDecodeError:
+                return {"error": "Failed to parse details for fruits/vegetables."}
         else:
             response_text = generate_product_details(sample_file)
             if response_text:
