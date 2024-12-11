@@ -56,7 +56,6 @@ def generate_product_details(sample_file):
     response = model.generate_content([
         sample_file,  
     """For each product in the image, list:
-    - timestamp (current date and time of processing the product)
     - product name
     - brand
     - MRP
