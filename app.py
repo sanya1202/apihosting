@@ -50,7 +50,7 @@ def predict_multiple_fruit_or_vegetable_details(sample_file):
     model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest")
     response = model.generate_content([
         sample_file,
-        """List the name, freshness index (scale of 1-10), and expected life span (1.6 * freshness index) for each fruit/vegetable in the image. 
+        """List the name, freshness index (scale of 1-10), and expected life span ((1.6 * freshness index)rounded off to nearest whole number) for each fruit/vegetable in the image. 
         Return the result in JSON format like this:
         {
             "items": [
