@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 
 # Configure the API key
-api_key = 'AIzaSyDFgaNzgmlvISGhnsuttXIqRvtwV3LqKnQ'  # Replace with your actual API key
+api_key = 'AIzaSyBznlv03Lt7NQBxNFSWyfpYITFhT6kRClc'  # Replace with your actual API key
 genai.configure(api_key=api_key)
 
 # Define the app object
