@@ -94,7 +94,7 @@ def generate_product_details(sample_file):
     return response_text
 def add_timestamps_to_products(products):
     """Add timestamp to each product."""
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Current timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " +5:30"  # Current timestamp
     for product in products:
         product["timestamp"] = timestamp
     return products
