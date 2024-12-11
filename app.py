@@ -69,7 +69,6 @@ def generate_product_details(sample_file):
     {
         "products": [
             {
-                "timestamp": "2024-12-10 14:30:00",
                 "product_name": "Tata Salt",
                 "brand": "Tata",
                 "MRP": "60RS",
@@ -79,7 +78,6 @@ def generate_product_details(sample_file):
                 "expected_life_span": 15
             },
             {
-                "timestamp": "2024-12-10 14:30:01",
                 "product_name": "Maggi",
                 "brand": "Nestle",
                 "MRP": "12RS",
