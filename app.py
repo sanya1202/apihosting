@@ -45,17 +45,17 @@ def classify_image(sample_file):
 # Predict details for multiple fruits/vegetables
 def predict_multiple_fruit_or_vegetable_details(sample_file):
     """
-    Predict the name, freshness index, and expected life span of each fruit/vegetable in the image.
+    Predict the name, freshness index, and expected life span(realistic or practical number of days it is suitable to eat ) of each fruit/vegetable in the image.
     """
     model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
     response = model.generate_content([
         sample_file,
-        """List the name, freshness index (scale of 1-10), and expected life span ((1.6 * freshness index)rounded off to nearest whole number) for each fruit/vegetable in the image. 
+        """List the name, freshness index (scale of 1-10), and expected life span (realistic or practical number of days it is suitable to eat ) for each fruit/vegetable in the image. 
         Return the result in JSON format like this:
         {
             "items": [
-                {"name": "Apple", "freshness_index": 9, "expected_life_span": 14.4},
-                {"name": "Banana", "freshness_index": 6, "expected_life_span": 9.6}
+                {"name": "Apple", "freshness_index": 9, "expected_life_span": 7},
+                {"name": "Banana", "freshness_index": 6, "expected_life_span": 2}
             ]
         }"""
     ])
@@ -93,7 +93,7 @@ def generate_product_details(sample_file):
     - MRP
     - expiry date
     - product count which will be minimum 1 
-    - whether it is expired ("YES" or "NO")
+    - whether it is expired ("YES" or "NO" if expiry date detected, else NA)
     - expected life span in days (subtract today's date from the expiry date, or "NA" if expired)
 
     If some details are not found, fill with "NA". Return data in JSON format like this:
@@ -112,7 +112,7 @@ def generate_product_details(sample_file):
                 "product_name": "Maggi",
                 "brand": "Nestle",
                 "MRP": "12RS",
-                "expiry_date": "2024-12-15",
+                "expiry_date": "2024-12-25",
                 "product_count": 1,
                 "is_expired": "NO",
                 "expected_life_span": 5
