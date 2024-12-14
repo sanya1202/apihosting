@@ -55,7 +55,7 @@ def predict_multiple_fruit_or_vegetable_details(sample_file):
         {
             "items": [
                 {"name": "Apple", "freshness_index": 9, "expected_life_span": 7},
-                {"name": "Banana", "freshness_index": 6, "expected_life_span": 2}
+                {"name": "Banana", "freshness_index": 6, "expected_life_span": 3}
             ]
         }"""
     ])
