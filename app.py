@@ -247,13 +247,13 @@ def classify_image(sample_file):
 # Predict details for multiple fruits/vegetables
 def predict_multiple_fruit_or_vegetable_details(sample_file):
     """
-    Predict the name, freshness index, and expected life span(realistic or practical number of days it is suitable to eat ) of each fruit/vegetable in the image.Also give resoning-visual description like colour,any blemishes or spots,texture etc. for the specified freshness index
+    Predict the name, freshness index, and expected life span(realistic or practical number of days it is suitable to eat ) of each type of fruit/vegetable in the image.If multiple fruits/vegetables of same kind, give average freshness index of them.Also give resoning-visual description like colour,any blemishes or spots,texture etc. for the specified freshness index
 
     """
     model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
     response = model.generate_content([
         sample_file,
-        """List the name, freshness index (scale of 1-10), and expected life span (realistic or practical number of days it is suitable to eat ) for each fruit/vegetable in the image.Also give resoning-visual description like colour,any blemishes or spots,texture etc. for the specified freshness index
+        """List the name, freshness index (scale of 1-10), and expected life span (realistic or practical number of days it is suitable to eat ) for each type of fruit/vegetable in the image.If multiple fruits/vegetables of same kind, give average freshness index of them.Also give resoning-visual description like colour,any blemishes or spots,texture etc. for the specified freshness index
         Return the result in JSON format like this:
         {
             "items": [
