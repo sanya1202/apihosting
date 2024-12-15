@@ -261,7 +261,7 @@ def predict_multiple_fruit_or_vegetable_details(sample_file):
                  {"name": "Banana", "freshness_index": 6, "expected_life_span": 3,"description":"some black spots present on the skin of bananas.texture slightly less firm"}
              ]
         }"""
-     ])
+    ])
     
     
     response_text = response.text.strip()
