@@ -89,10 +89,10 @@
 #     - product name
 #     - brand
 #     - MRP
-#     - expiry date in format yyyy-mm-dd
+#     - expiry date in format dd-mm-yyyy
 #     - product count which will be minimum 1 
 #     - whether it is expired ("YES" or "NO" if expiry date detected, else NA)
-#     - expected life span in days (Calculate the number of days remaining until the expiry date detected in format yyyy-mm-dd from present date, or "NA" if expired)
+#     - expected life span in days (Calculate the number of days remaining until the expiry date detected in format dd-mm-yyyy from present date, or "NA" if expired)
 
 #     If some details are not found, fill with "NA". Return data in JSON format like this:
 #     {
@@ -295,10 +295,10 @@ def generate_product_details(sample_file):
     - product name
     - brand
     - MRP
-    - expiry date in format yyyy-mm-dd
+    - expiry date in format dd-mm-yyyy
     - product count which will be minimum 1 
     - whether it is expired ("YES" or "NO" if expiry date detected, else NA)
-    - expected life span in days (Calculate the number of days remaining until the expiry date detected in format yyyy-mm-dd from present date, or "NA" if expired)
+    - expected life span in days (Calculate the number of days remaining until the expiry date detected in format dd-mm-yyyy from present date, or "NA" if expired)
 
     If some details are not found, fill with "NA". Return data in JSON format like this:
     {
@@ -307,19 +307,19 @@ def generate_product_details(sample_file):
                 "product_name": "Tata Salt",
                 "brand": "Tata",
                 "MRP": "60RS",
-                "expiry_date": "2024-12-25",
+                "expiry_date": "25-12-2024",
                 "product_count": 1,
                 "is_expired": "NO",
-                "expected_life_span": 15
+                "expected_life_span": 9
             },
             {
                 "product_name": "Maggi",
                 "brand": "Nestle",
                 "MRP": "12RS",
-                "expiry_date": "2024-12-25",
+                "expiry_date": "25-12-2024",
                 "product_count": 1,
                 "is_expired": "NO",
-                "expected_life_span": 5
+                "expected_life_span": 9
             }
         ]
     }I want only these details, no more text."""
