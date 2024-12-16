@@ -298,7 +298,7 @@ def generate_product_details(sample_file):
     - expiry date in format dd-mm-yyyy
     - product count which will be minimum 1 
     - whether it is expired ("YES" or "NO" if expiry date detected, else NA)
-    - expected life span in days (Calculate the number of days remaining until the expiry date detected in format dd-mm-yyyy from present date, or "NA" if expired)
+    - expected life span in days (Calculate the number of days remaining until the expiry date detected in format dd-mm-yyyy from date 16-12-2024, or "NA" if expired)
 
     If some details are not found, fill with "NA". Return data in JSON format like this:
     {
