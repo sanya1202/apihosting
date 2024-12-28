@@ -239,7 +239,7 @@ def upload_image(image_bytes):
 # Classify image content (fruits/vegetables or others)
 def classify_image(sample_file):
     model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
-    response = model.generate_content([sample_file, "check whther it is an image of vegetable/fruit , do not get confused by the images of fruits and vegetables that are there on the packet of packaged food itmes? Answer 'yes' or 'no' only."])
+    response = model.generate_content([sample_file, "check whether it is an image of vegetable/fruit , do not get confused by the images of fruits and vegetables that are there on the packet of packaged food itmes? Answer 'yes' or 'no' only."])
     
     classification = response.text.strip().lower()
     return classification == "yes"
@@ -258,8 +258,8 @@ def predict_multiple_fruit_or_vegetable_details(sample_file):
         .Also give the count of number of fruits/vegetables with freshness index less than or equal to 3 in each image.Return the result in JSON format like this:
         {
             "items": [
-                {"name": "Apple", "freshness_index": 9, "expected_life_span": 7,"description":"bright red colour,firm texture with no signs of rottenness"},
-                 {"name": "Banana", "freshness_index": 6, "expected_life_span": 3,"description":"some black spots present on the skin of bananas.texture slightly less firm"}
+                {"name": "Apple", "freshness_index": 9, "expected_life_span": 7,"description":{"bright red colour","firm texture with no signs of rottenness"}},
+                 {"name": "Banana", "freshness_index": 6, "expected_life_span": 3,"description":{"some black spots present on the skin of bananas","texture slightly less firm"}}
              ],
             "rotten count":0
         }"""
