@@ -240,6 +240,7 @@ def upload_image(image_bytes):
 def classify_image(sample_file):
     model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
     response = model.generate_content([sample_file, "check whther it is an image of vegetable/fruit , do not get confused by the images of fruits and vegetables that are there on the packet of packaged food itmes? Answer 'yes' or 'no' only."])
+    
     classification = response.text.strip().lower()
     return classification == "yes"
 
@@ -253,7 +254,7 @@ def predict_multiple_fruit_or_vegetable_details(sample_file):
     model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest")
     response = model.generate_content([
         sample_file,
-        """List the name, freshness index (scale of 1-10), and expected life span (realistic or practical number of days it is suitable to eat ) for each type of fruit/vegetable in the image.If multiple fruits/vegetables of same kind, give average freshness index of them.Also give resoning-visual description like colour,any blemishes or spots,texture etc. for the specified freshness index
+        """List the name, freshness index (scale of 1-10), and expected life span (realistic or practical number of days it is suitable to eat ) for each type of fruit/vegetable in the image.If multiple fruits/vegetables of same kind, give average freshness index of them.Also give resoning-visual description in points like colour,any blemishes or spots,texture etc. for the specified freshness index
         Return the result in JSON format like this:
         {
             "items": [
@@ -299,6 +300,7 @@ def generate_product_details(sample_file):
     - product count which will be minimum 1 
     - whether it is expired ("YES" or "NO" if expiry date detected, else NA)
     - expected life span in days (Calculate the number of days remaining until the expiry date detected in format dd-mm-yyyy from date 16-12-2024, or "NA" if expired)
+    -category of the product among the following list of categories: {categories}
 
     If some details are not found, fill with "NA". Return data in JSON format like this:
     {
@@ -310,7 +312,8 @@ def generate_product_details(sample_file):
                 "expiry_date": "25-12-2024",
                 "product_count": 1,
                 "is_expired": "NO",
-                "expected_life_span": 9
+                "expected_life_span": 9,
+                "category":"staples"
             },
             {
                 "product_name": "Maggi",
@@ -319,7 +322,8 @@ def generate_product_details(sample_file):
                 "expiry_date": "25-12-2024",
                 "product_count": 1,
                 "is_expired": "NO",
-                "expected_life_span": 9
+                "expected_life_span": 9,
+                "category":"packaged food"
             }
         ]
     }I want only these details, no more text."""
