@@ -255,13 +255,12 @@ def predict_multiple_fruit_or_vegetable_details(sample_file):
     response = model.generate_content([
         sample_file,
         """List the name, freshness index (scale of 1-10), and expected life span (realistic or practical number of days it is suitable to eat ) for each type of fruit/vegetable in the image.If multiple fruits/vegetables of same kind, give average freshness index of them.Also give resoning-visual description  like colour,any blemishes or spots,texture etc. for the specified freshness index
-        .Also give the count of number of fruits/vegetables with freshness index less than or equal to 3 in each image.Return the result in JSON format like this:
+        .Return the result in JSON format like this:
         {
             "items": [
                 {"name": "Apple", "freshness_index": 9, "expected_life_span": 7,"description":"bright red colour,firm texture with no signs of rottenness"},
                  {"name": "Banana", "freshness_index": 6, "expected_life_span": 3,"description":"some black spots present on the skin of bananas ,texture slightly less firm"}
              ],
-            "rotten count":0
         }"""
     ])
     
